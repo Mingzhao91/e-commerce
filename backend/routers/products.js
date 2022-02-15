@@ -2,8 +2,7 @@ const { Product } = require("../models/product");
 const express = require("express");
 const router = express.Router();
 
-router.get(`/`, async (req, res) => {
-  console.log("x: ", x);
+router.get("/", async (req, res) => {
   const productList = await Product.find();
 
   if (!productList) {
@@ -12,24 +11,20 @@ router.get(`/`, async (req, res) => {
   res.send(productList);
 });
 
-router.post(`/`, (req, res) => {
-  const product = new Product({
+router.post("/", async (req, res) => {
+  let product = new Product({
     name: req.body.name,
     image: req.body.image,
     countInStock: req.body.countInStock,
   });
 
-  product
-    .save()
-    .then((createdProduct) => {
-      res.status(201).json(createdProduct);
-    })
-    .catch((error) => {
-      res.status(500).json({
-        error,
-        success: false,
-      });
-    });
+  product = await product.save();
+
+  if (!product) {
+    return res.status(404).send("the product cannot be created!");
+  }
+
+  res.send(product);
 });
 
 module.exports = router;
