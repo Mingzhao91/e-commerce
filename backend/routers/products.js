@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
   product = await product.save();
 
   if (!product) {
-    return res.status(404).send("the product cannot be created!");
+    res.status(404).send("the product cannot be created!");
   }
 
   res.send(product);
