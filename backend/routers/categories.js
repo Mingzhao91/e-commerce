@@ -11,6 +11,18 @@ router.get("/", async (req, res) => {
   res.status(200).send(categoryList);
 });
 
+router.get("/:id", async (req, res) => {
+  const category = await Category.findById(req.params.id);
+
+  if (!category) {
+    res
+      .status(500)
+      .json({ message: "Category with the given ID was not found." });
+  }
+
+  res.status(200).send(category);
+});
+
 router.post("/", async (req, res) => {
   let category = new Category({
     name: req.body.name,
@@ -24,7 +36,7 @@ router.post("/", async (req, res) => {
     return res.status(404).send("Category cannot be created!");
   }
 
-  res.send(category);
+  res.status(200).send(category);
 });
 
 router.delete("/:id", async (req, res) => {
