@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
   if (!categoryList) {
     res.status(500).json({ success: false });
   }
-  res.send(categoryList);
+  res.status(200).send(categoryList);
 });
 
 router.post("/", async (req, res) => {
