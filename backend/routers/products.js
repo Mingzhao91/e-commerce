@@ -41,4 +41,14 @@ router.post("/", async (req, res) => {
   res.send(product);
 });
 
+router.get(`/:id`, async (req, res) => {
+  console.log("req.params.id: ", req.params.id);
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    res.status(500).json({ success: false });
+  }
+  res.send(product);
+});
+
 module.exports = router;
