@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv/config");
 
+const authJwt = require("./helpers/jwt");
+
 app.use(cors());
 app.options("*", cors());
 
@@ -12,6 +14,8 @@ app.options("*", cors());
 app.use(express.json());
 // HTTP request logger middleware for node.js
 app.use(morgan("tiny"));
+// Validate JWT. User needs to provide validate token in order to visit routes
+app.use(authJwt());
 
 // Routes
 const productsRouter = require("./routers/products");
