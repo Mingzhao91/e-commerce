@@ -2,6 +2,7 @@ const { User } = require("../models/user");
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 router.get(`/`, async (req, res) => {
   const userList = await User.find().select("-passwordHash");
@@ -28,7 +29,10 @@ router.post("/", async (req, res) => {
   let user = new User({
     name: req.body.name,
     email: req.body.email,
-    passwordHash: bcrypt.hashSync(req.body.password, 10),
+    passwordHash: bcrypt.hashSync(
+      req.body.password,
+      parseInt(process.env.BCRYPT_SALT)
+    ),
     phone: req.body.phone,
     isAdmin: req.body.isAdmin,
     apartment: req.body.apartment,
@@ -53,7 +57,10 @@ router.put("/:id", async (req, res) => {
 
   if (userExist) {
     if (req.body.password) {
-      newPasswordHash = bcrypt.hashSync(req.body.password, 10);
+      newPasswordHash = bcrypt.hashSync(
+        req.body.password,
+        parseInt(process.env.BCRYPT_SALT)
+      );
     } else {
       newPasswordHash = userExist.passwordHash;
     }
@@ -85,6 +92,32 @@ router.put("/:id", async (req, res) => {
   }
 
   res.status(200).send(user);
+});
+
+router.post("/login", async (req, res) => {
+  const user = await User.findOne({
+    email: req.body.email,
+  });
+  const secret = process.env.JWT_SECRET;
+  if (!user) {
+    res.status(400).send("User not found!");
+  }
+
+  if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {
+    const token = jwt.sign(
+      {
+        userId: user.id,
+      },
+      secret,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    res.status(200).send({ user: user.email, token });
+  } else {
+    res.status(400).send("password is wrong!");
+  }
 });
 
 module.exports = router;
