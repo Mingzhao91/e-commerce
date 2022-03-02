@@ -121,4 +121,18 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/get/count", async (req, res) => {
+  try {
+    const userCount = await User.countDocuments();
+
+    if (userCount) {
+      return res.status(200).json({ userCount: userCount });
+    } else {
+      return res.status(500).json({ success: false });
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, error });
+  }
+});
+
 module.exports = router;
