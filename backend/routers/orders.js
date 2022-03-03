@@ -7,6 +7,13 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   const orderList = await Order.find()
     .populate("user", "name")
+    .populate({
+      path: "orderItems",
+      populate: {
+        path: "product",
+        populate: "category",
+      },
+    })
     .sort({ dateOrdered: -1 });
 
   if (!orderList) {
@@ -20,7 +27,15 @@ router.get("/:id", async (req, res) => {
     res.status(400).send("Invalid Order Id");
   }
 
-  const order = await Order.findById(req.params.id).populate("user", "name");
+  const order = await Order.findById(req.params.id)
+    .populate("user", "name")
+    .populate({
+      path: "orderItems",
+      populate: {
+        path: "product",
+        populate: "category",
+      },
+    });
 
   if (!order) {
     res.status(500).json({ message: "Order with the given ID was not found." });
