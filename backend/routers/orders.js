@@ -1,5 +1,6 @@
 const { Order } = require("../models/order");
 const { OrderItem } = require("../models/order-item");
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 
@@ -12,6 +13,20 @@ router.get("/", async (req, res) => {
     res.status(500).json({ success: false });
   }
   res.status(200).send(orderList);
+});
+
+router.get("/:id", async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    res.status(400).send("Invalid Order Id");
+  }
+
+  const order = await Order.findById(req.params.id).populate("user", "name");
+
+  if (!order) {
+    res.status(500).json({ message: "Order with the given ID was not found." });
+  }
+
+  res.status(200).send(order);
 });
 
 router.post("/", async (req, res) => {
