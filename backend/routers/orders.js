@@ -3,13 +3,15 @@ const { OrderItem } = require("../models/order-item");
 const express = require("express");
 const router = express.Router();
 
-router.get(`/`, async (req, res) => {
-  const orderList = Order.find();
+router.get("/", async (req, res) => {
+  const orderList = await Order.find()
+    .populate("user", "name")
+    .sort({ dateOrdered: -1 });
 
   if (!orderList) {
     res.status(500).json({ success: false });
   }
-  res.send(orderList);
+  res.status(200).send(orderList);
 });
 
 router.post("/", async (req, res) => {
