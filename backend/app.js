@@ -17,6 +17,8 @@ app.use(express.json());
 app.use(morgan("tiny"));
 // Validate JWT. User needs to provide validate token in order to visit routes
 app.use(authJwt());
+// Make public/uploads path static
+app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 // Handle errors
 app.use(errorHandler);
 
