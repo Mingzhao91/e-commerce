@@ -15,6 +15,7 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@apps-workspace/products": ["libs/products/src/index.ts"],
             "@apps-workspace/ui": ["libs/ui/src/index.ts"]
         }
     },
