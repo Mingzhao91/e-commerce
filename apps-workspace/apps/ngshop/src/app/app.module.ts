@@ -9,10 +9,11 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ProductLstComponent } from './pages/product-lst/product-lst.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { UiModule } from '@apps-workspace/ui';
 
 @NgModule({
     declarations: [AppComponent, NxWelcomeComponent, HomePageComponent, ProductLstComponent, HeaderComponent, FooterComponent],
-    imports: [BrowserModule, AppRoutingModule],
+    imports: [BrowserModule, AppRoutingModule, UiModule],
     providers: [],
     bootstrap: [AppComponent]
 })
