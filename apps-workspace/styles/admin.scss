@@ -1,4 +1,5 @@
 // Base
+@import '~normalize.css';
 @import './base/colors.scss';
 @import './base/fonts.scss';
 @import './base/mixins.scss';
@@ -9,6 +10,10 @@
 @import '~primeng/resources/primeng.min.css';
 @import '~primeflex/primeflex.css';
 @import './base/configuration.scss';
+
+// Shared
+@import './apps/admin/shared/shell.scss';
+@import './apps/admin/shared/sidebar.scss';
 
 // Libs
 @import './libs/ui/ui.scss';
