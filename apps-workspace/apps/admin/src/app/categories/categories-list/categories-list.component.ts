@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
+import { CategoriesService, Category } from '@apps-workspace/products';
+
 @Component({
-    selector: 'apps-workspace-categories-list',
+    selector: 'admin-categories-list',
     templateUrl: './categories-list.component.html',
     styleUrls: ['./categories-list.component.scss']
 })
 export class CategoriesListComponent implements OnInit {
-    public categories = [];
+    public categories: Category[] = [];
 
-    constructor() {}
+    constructor(private categoriesService: CategoriesService) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.categoriesService.getCategories().subscribe((categories) => {
+            this.categories = categories;
+        });
+    }
 }
