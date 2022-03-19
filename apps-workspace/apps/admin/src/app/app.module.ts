@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
@@ -35,7 +36,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [AppComponent, NxWelcomeComponent, ShellComponent, DashboardComponent, SidebarComponent, CategoriesListComponent],
-    imports: [BrowserModule, RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' }), ...UX_MODULES],
+    imports: [BrowserModule, RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' }), HttpClientModule, ...UX_MODULES],
     providers: [],
     bootstrap: [AppComponent]
 })
