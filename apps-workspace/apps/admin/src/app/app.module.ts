@@ -19,8 +19,9 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-const UX_MODULES = [CardModule, ToolbarModule, ButtonModule, TableModule, InputTextModule, ToastModule];
+const UX_MODULES = [CardModule, ToolbarModule, ButtonModule, TableModule, InputTextModule, ToastModule, ConfirmDialogModule];
 
 const routes: Routes = [
     {

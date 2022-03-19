@@ -18,4 +18,8 @@ export class CategoriesService {
     createCategories(category: Category): Observable<Category> {
         return this.http.post<Category>('http://localhost:3000/api/v1/categories', category);
     }
+
+    deleteCategories(categoryId: string): Observable<{ success: boolean; message: string }> {
+        return this.http.delete<{ success: boolean; message: string }>(`http://localhost:3000/api/v1/categories/${categoryId}`);
+    }
 }
