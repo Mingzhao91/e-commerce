@@ -24,10 +24,7 @@
         {
             "files": ["*.ts", "*.tsx"],
             "extends": ["plugin:@nrwl/nx/typescript"],
-            "rules": {
-                "no-empty-function": "off",
-                "@typescript-eslint/no-empty-function": ["off"]
-            }
+            "rules": {}
         },
         {
             "files": ["*.js", "*.jsx"],
