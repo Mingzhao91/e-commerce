@@ -9,7 +9,7 @@ import { MessageService } from 'primeng/api';
 import { CategoriesService } from '@apps-workspace/products';
 
 @Component({
-    selector: 'apps-workspace-categories-form',
+    selector: 'admin-categories-form',
     templateUrl: './categories-form.component.html',
     styleUrls: ['./categories-form.component.scss'],
     providers: [MessageService]
