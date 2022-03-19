@@ -11,8 +11,7 @@ import { CategoriesService } from '@apps-workspace/products';
 @Component({
     selector: 'admin-categories-form',
     templateUrl: './categories-form.component.html',
-    styleUrls: ['./categories-form.component.scss'],
-    providers: [MessageService]
+    styleUrls: ['./categories-form.component.scss']
 })
 export class CategoriesFormComponent implements OnInit {
     public form: FormGroup = new FormBuilder().group({

@@ -7,8 +7,7 @@ import { CategoriesService, Category } from '@apps-workspace/products';
 @Component({
     selector: 'admin-categories-list',
     templateUrl: './categories-list.component.html',
-    styleUrls: ['./categories-list.component.scss'],
-    providers: [MessageService, ConfirmationService]
+    styleUrls: ['./categories-list.component.scss']
 })
 export class CategoriesListComponent implements OnInit {
     public categories: Category[] = [];
