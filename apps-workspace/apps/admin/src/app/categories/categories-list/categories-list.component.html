@@ -21,8 +21,10 @@
                  responsiveLayout="scroll">
           <ng-template pTemplate="header">
             <tr>
-              <th>Id</th>
-              <th>Name</th>
+              <th pSortableColumn="name">
+                Name
+                <p-sortIcon field="name"></p-sortIcon>
+              </th>
               <th>Icon</th>
               <th>Color</th>
               <th></th>
@@ -31,10 +33,13 @@
           <ng-template pTemplate="body"
                        let-category>
             <tr>
-              <td>{{category.id}}</td>
               <td>{{category.name}}</td>
-              <td>{{category.icon}}</td>
-              <td>{{category.color}}</td>
+              <td><i class="pi"
+                   [ngClass]="'pi-' + category.icon"></i></td>
+              <td>
+                <p-colorPicker [ngModel]="category.color"
+                               [disabled]="true"></p-colorPicker>
+              </td>
               <td>
                 <p-button styleClass="p-button-danger mr-2"
                           icon="pi pi-trash"
