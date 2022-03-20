@@ -37,8 +37,9 @@
               <td><i class="pi"
                    [ngClass]="'pi-' + category.icon"></i></td>
               <td>
-                <p-colorPicker [ngModel]="category.color"
-                               [disabled]="true"></p-colorPicker>
+                <i class="pi pi-circle-on"
+                   style="font-size: 2rem"
+                   [ngStyle]="{ color: category.color }"></i>
               </td>
               <td>
                 <p-button styleClass="p-button-danger mr-2"
