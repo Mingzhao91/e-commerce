@@ -31,7 +31,7 @@ export class CategoriesListComponent implements OnInit {
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
                 this.categoriesService.deleteCategories(categoryId).subscribe({
-                    next: (response) => {
+                    next: () => {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Success',
@@ -39,7 +39,7 @@ export class CategoriesListComponent implements OnInit {
                         });
                         this._getCategories();
                     },
-                    error: (error) => {
+                    error: () => {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Error',
@@ -47,8 +47,7 @@ export class CategoriesListComponent implements OnInit {
                         });
                     }
                 });
-            },
-            reject: () => {}
+            }
         });
     }
 
