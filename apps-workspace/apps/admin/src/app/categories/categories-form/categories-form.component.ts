@@ -30,7 +30,8 @@ export class CategoriesFormComponent implements OnInit {
     ngOnInit(): void {
         this.form = new FormBuilder().group({
             name: ['', [Validators.required]],
-            icon: ['', [Validators.required]]
+            icon: ['', [Validators.required]],
+            color: ['#fff']
         });
 
         this._checkEditMode();
@@ -95,7 +96,8 @@ export class CategoriesFormComponent implements OnInit {
                 this.categoriesService.getCategory(params['id']).subscribe((category) => {
                     this.form.setValue({
                         name: category.name,
-                        icon: category.icon
+                        icon: category.icon,
+                        color: category.color
                     });
                 });
             }
