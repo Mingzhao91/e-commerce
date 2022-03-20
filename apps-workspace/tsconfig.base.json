@@ -19,7 +19,8 @@
             "@apps-workspace/orders": ["libs/orders/src/index.ts"],
             "@apps-workspace/products": ["libs/products/src/index.ts"],
             "@apps-workspace/ui": ["libs/ui/src/index.ts"],
-            "@apps-workspace/users": ["libs/users/src/index.ts"]
+            "@apps-workspace/users": ["libs/users/src/index.ts"],
+            "@env/*": ["environments/*"]
         }
     },
     "exclude": ["node_modules", "tmp"]
