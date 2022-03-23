@@ -24,11 +24,12 @@ export class CategoriesFormComponent implements OnInit {
         private categoriesService: CategoriesService,
         private messageService: MessageService,
         private location: Location,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private formBuilder: FormBuilder
     ) {}
 
     ngOnInit(): void {
-        this.form = new FormBuilder().group({
+        this.form = this.formBuilder.group({
             name: ['', [Validators.required]],
             icon: ['', [Validators.required]],
             color: ['#fff']
