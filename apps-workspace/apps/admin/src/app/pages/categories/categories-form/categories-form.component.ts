@@ -29,13 +29,16 @@ export class CategoriesFormComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this._initForm();
+        this._checkEditMode();
+    }
+
+    private _initForm() {
         this.form = this.formBuilder.group({
             name: ['', [Validators.required]],
             icon: ['', [Validators.required]],
             color: ['#fff']
         });
-
-        this._checkEditMode();
     }
 
     onSubmit() {
