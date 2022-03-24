@@ -110,6 +110,8 @@
                      accept="image/*"
                      class="p-inputtext"
                      (change)="onImageUpload($event)" />
+              <small *ngIf="isSubmitted && form.get('image')?.invalid"
+                     class="p-error">Image is required</small>
               <div class="col-2 mt-2 pl-0">
                 <img [src]="imageDisplay"
                      style="width: 100%;">

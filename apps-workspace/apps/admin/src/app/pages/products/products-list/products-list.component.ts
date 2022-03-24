@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Product, ProductsService } from '@apps-workspace/products';
 
@@ -10,7 +11,7 @@ import { Product, ProductsService } from '@apps-workspace/products';
 export class ProductsListComponent implements OnInit {
     products: Product[] = [];
 
-    constructor(private productsService: ProductsService) {}
+    constructor(private productsService: ProductsService, private router: Router) {}
 
     ngOnInit(): void {
         this._getProducts();
@@ -18,7 +19,9 @@ export class ProductsListComponent implements OnInit {
 
     deleteProduct(productId: string) {}
 
-    updateProduct(productId: string) {}
+    updateProduct(productId: string) {
+        this.router.navigateByUrl(`products/form/${productId}`);
+    }
 
     private _getProducts() {
         this.productsService.getProducts().subscribe((products) => {

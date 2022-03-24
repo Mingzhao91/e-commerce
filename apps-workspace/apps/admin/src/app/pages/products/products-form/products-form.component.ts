@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 import { timer } from 'rxjs';
 
@@ -26,12 +27,14 @@ export class ProductsFormComponent implements OnInit {
         private productsService: ProductsService,
         private categoriesService: CategoriesService,
         private messageService: MessageService,
-        private location: Location
+        private location: Location,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
         this._initForm();
         this._getCategories();
+        this._checkEditMode();
     }
 
     private _initForm() {
@@ -42,8 +45,8 @@ export class ProductsFormComponent implements OnInit {
             category: ['', [Validators.required]],
             countInStock: [0, [Validators.required]],
             description: ['', [Validators.required]],
+            image: ['', Validators.required],
             richDescription: [''],
-            image: [''],
             isFeatured: [false]
         });
     }
@@ -51,6 +54,28 @@ export class ProductsFormComponent implements OnInit {
     private _getCategories() {
         this.categoriesService.getCategories().subscribe((categories) => {
             this.categories = categories;
+        });
+    }
+
+    private _checkEditMode() {
+        this.route.params.subscribe((params) => {
+            if (params['id']) {
+                this.editMode = true;
+                this.currentProductId = params['id'];
+                this.productsService.getProduct(params['id']).subscribe((product) => {
+                    this.form.get('name')?.setValue(product.name);
+                    this.form.get('category')?.setValue(product.category?.id);
+                    this.form.get('brand')?.setValue(product.brand);
+                    this.form.get('price')?.setValue(product.price);
+                    this.form.get('countInStock')?.setValue(product.countInStock);
+                    this.form.get('isFeatured')?.setValue(product.isFeatured);
+                    this.form.get('description')?.setValue(product.description);
+                    this.form.get('richDescription')?.setValue(product.richDescription);
+                    this.form.get('image')?.setValidators([]);
+                    this.form.get('image')?.updateValueAndValidity();
+                    this.imageDisplay = product.image || '';
+                });
+            }
         });
     }
 
@@ -76,11 +101,15 @@ export class ProductsFormComponent implements OnInit {
             productFormData.append(key, this.form.value[key]);
         });
 
-        this._addProduct(productFormData);
+        if (this.editMode) {
+            this._updateProduct(productFormData);
+        } else {
+            this._addProduct(productFormData);
+        }
     }
 
-    private _addProduct(productData: FormData) {
-        this.productsService.createProduct(productData).subscribe({
+    private _addProduct(productFormData: FormData) {
+        this.productsService.createProduct(productFormData).subscribe({
             next: (product: Product) => {
                 this.messageService.add({
                     severity: 'success',
@@ -94,6 +123,26 @@ export class ProductsFormComponent implements OnInit {
                     severity: 'error',
                     summary: 'Error',
                     detail: 'Product is not created!'
+                });
+            }
+        });
+    }
+
+    private _updateProduct(productFormData: FormData) {
+        this.productsService.updateProduct(productFormData, this.currentProductId).subscribe({
+            next: (product: Product) => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `Product ${product.name} is updated!`
+                });
+                timer(2000).subscribe(() => this.location.back());
+            },
+            error: () => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Product is not updated!'
                 });
             }
         });

@@ -19,7 +19,15 @@ export class ProductsService {
         return this.http.get<Product[]>(this.apiURLProducts);
     }
 
-    createProduct(productData: FormData): Observable<Product> {
-        return this.http.post<Product>(this.apiURLProducts, productData);
+    createProduct(productFormData: FormData): Observable<Product> {
+        return this.http.post<Product>(this.apiURLProducts, productFormData);
+    }
+
+    getProduct(productId: string): Observable<Product> {
+        return this.http.get<Product>(`${this.apiURLProducts}/${productId}`);
+    }
+
+    updateProduct(productFormData: FormData, productId: string): Observable<Product> {
+        return this.http.put<Product>(`${this.apiURLProducts}/${productId}`, productFormData);
     }
 }
