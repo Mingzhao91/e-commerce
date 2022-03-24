@@ -148,5 +148,7 @@ export class ProductsFormComponent implements OnInit {
         });
     }
 
-    onCancel() {}
+    onCancel() {
+        this.location.back();
+    }
 }
