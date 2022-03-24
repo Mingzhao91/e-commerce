@@ -16,7 +16,9 @@
 
     <div class="grid">
       <div class="col-12">
-        <p-table [value]="categories"
+        <p-table [paginator]="true"
+                 [rows]="10"
+                 [value]="categories"
                  styleClass="p-datatable-gridlines"
                  responsiveLayout="scroll">
           <ng-template pTemplate="header">
