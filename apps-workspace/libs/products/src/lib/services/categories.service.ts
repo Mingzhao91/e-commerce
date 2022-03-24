@@ -20,7 +20,7 @@ export class CategoriesService {
     }
 
     getCategory(categoryId: string): Observable<Category> {
-        return this.http.get<Category>(`${this.apiURLCategories}${categoryId}`);
+        return this.http.get<Category>(`${this.apiURLCategories}/${categoryId}`);
     }
 
     createCategories(category: Category): Observable<Category> {
@@ -28,10 +28,10 @@ export class CategoriesService {
     }
 
     updateCategories(category: Category): Observable<Category> {
-        return this.http.put<Category>(`${this.apiURLCategories}${category.id}`, category);
+        return this.http.put<Category>(`${this.apiURLCategories}/${category.id}`, category);
     }
 
     deleteCategories(categoryId: string): Observable<{ success: boolean; message: string }> {
-        return this.http.delete<{ success: boolean; message: string }>(`${this.apiURLCategories}${categoryId}`);
+        return this.http.delete<{ success: boolean; message: string }>(`${this.apiURLCategories}/${categoryId}`);
     }
 }
