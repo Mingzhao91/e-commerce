@@ -31,6 +31,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
 import { TagModule } from 'primeng/tag';
+import { InputMaskModule } from 'primeng/inputmask';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
 const UX_MODULES = [
@@ -47,7 +48,8 @@ const UX_MODULES = [
     InputSwitchModule,
     DropdownModule,
     EditorModule,
-    TagModule
+    TagModule,
+    InputMaskModule
 ];
 
 const routes: Routes = [
