@@ -60,4 +60,8 @@ export class UsersListComponent implements OnInit {
             this.users = users;
         });
     }
+
+    getCountryName(countryKey: string) {
+        return countryKey ? this.usersService.getCountry(countryKey) : '';
+    }
 }
