@@ -1,4 +1,6 @@
+import { Product } from '@apps-workspace/products';
+
 export class OrderItem {
-    product?: string;
-    quantity?: string;
+    product?: Product;
+    quantity?: number;
 }
