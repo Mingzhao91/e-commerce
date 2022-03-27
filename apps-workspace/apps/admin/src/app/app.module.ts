@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AuthGuard, UsersModule } from '@apps-workspace/users';
+import { AuthGuard, JwtInterceptor, UsersModule } from '@apps-workspace/users';
 
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
@@ -142,7 +142,15 @@ const routes: Routes = [
         UsersModule,
         ...UX_MODULES
     ],
-    providers: [MessageService, ConfirmationService],
+    providers: [
+        MessageService,
+        ConfirmationService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JwtInterceptor,
+            multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
