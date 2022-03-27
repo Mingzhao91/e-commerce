@@ -62,11 +62,7 @@ export class UsersFormComponent implements OnInit {
                     summary: 'Success',
                     detail: `User ${user.name} is created!`
                 });
-                timer(2000)
-                    .toPromise()
-                    .then(() => {
-                        this.location.back();
-                    });
+                timer(2000).subscribe(() => this.location.back());
             },
             () => {
                 this.messageService.add({
