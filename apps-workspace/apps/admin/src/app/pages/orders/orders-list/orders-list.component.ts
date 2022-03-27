@@ -37,8 +37,8 @@ export class OrdersListComponent implements OnInit {
             header: 'Delete Order',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.ordersService.deleteOrder(orderId).subscribe(
-                    () => {
+                this.ordersService.deleteOrder(orderId).subscribe({
+                    next: () => {
                         this._getOrders();
                         this.messageService.add({
                             severity: 'success',
@@ -46,20 +46,19 @@ export class OrdersListComponent implements OnInit {
                             detail: 'Order is deleted!'
                         });
                     },
-                    () => {
+                    error: () => {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Error',
                             detail: 'Order is not deleted!'
                         });
                     }
-                );
+                });
             }
         });
     }
     private _getOrders() {
         this.ordersService.getOrders().subscribe((orders) => {
-            console.log(orders);
             this.orders = orders;
         });
     }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { concatMap, filter, pluck } from 'rxjs/operators';
+import { switchMap, filter, pluck } from 'rxjs/operators';
 
 import { MessageService } from 'primeng/api';
 
@@ -41,7 +41,7 @@ export class OrdersDetailComponent implements OnInit {
             .pipe(
                 pluck('id'),
                 filter((id) => id != undefined),
-                concatMap((id) => this.ordersService.getOrder(id))
+                switchMap((id) => this.ordersService.getOrder(id))
             )
             .subscribe((order) => {
                 this.order = order;

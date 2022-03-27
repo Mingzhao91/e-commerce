@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { timer } from 'rxjs';
+import { switchMap, filter, pluck, timer } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 
@@ -55,8 +55,8 @@ export class UsersFormComponent implements OnInit {
     }
 
     private _addUser(user: User) {
-        this.usersService.createUser(user).subscribe(
-            (user: User) => {
+        this.usersService.createUser(user).subscribe({
+            next: (user: User) => {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Success',
@@ -64,19 +64,19 @@ export class UsersFormComponent implements OnInit {
                 });
                 timer(2000).subscribe(() => this.location.back());
             },
-            () => {
+            error: () => {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
                     detail: 'User is not created!'
                 });
             }
-        );
+        });
     }
 
     private _updateUser(user: User) {
-        this.usersService.updateUser(user).subscribe(
-            () => {
+        this.usersService.updateUser(user).subscribe({
+            next: () => {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Success',
@@ -88,37 +88,41 @@ export class UsersFormComponent implements OnInit {
                         this.location.back();
                     });
             },
-            () => {
+            error: () => {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
                     detail: 'User is not updated!'
                 });
             }
-        );
+        });
     }
 
     private _checkeditMode() {
-        this.route.params.subscribe((params) => {
-            if (params['id']) {
-                this.editMode = true;
-                this.currentUserId = params['id'];
-                this.usersService.getUser(params['id']).subscribe((user) => {
-                    this.form.get('name')?.setValue(user.name);
-                    this.form.get('email')?.setValue(user.email);
-                    this.form.get('phone')?.setValue(user.phone);
-                    this.form.get('isAdmin')?.setValue(user.isAdmin);
-                    this.form.get('street')?.setValue(user.street);
-                    this.form.get('apartment')?.setValue(user.apartment);
-                    this.form.get('zip')?.setValue(user.zip);
-                    this.form.get('city')?.setValue(user.city);
-                    this.form.get('country')?.setValue(user.country);
+        this.route.params
+            .pipe(
+                pluck('id'),
+                filter((id: string) => id != undefined),
+                switchMap((id: string) => {
+                    this.editMode = true;
+                    this.currentUserId = id;
+                    return this.usersService.getUser(id);
+                })
+            )
+            .subscribe((user: User) => {
+                this.form.get('name')?.setValue(user.name);
+                this.form.get('email')?.setValue(user.email);
+                this.form.get('phone')?.setValue(user.phone);
+                this.form.get('isAdmin')?.setValue(user.isAdmin);
+                this.form.get('street')?.setValue(user.street);
+                this.form.get('apartment')?.setValue(user.apartment);
+                this.form.get('zip')?.setValue(user.zip);
+                this.form.get('city')?.setValue(user.city);
+                this.form.get('country')?.setValue(user.country);
 
-                    this.form.get('password')?.setValidators([]);
-                    this.form.get('password')?.updateValueAndValidity();
-                });
-            }
-        });
+                this.form.get('password')?.setValidators([]);
+                this.form.get('password')?.updateValueAndValidity();
+            });
     }
 
     onSubmit() {

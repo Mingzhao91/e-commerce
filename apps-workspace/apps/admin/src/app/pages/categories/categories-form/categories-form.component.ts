@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
-import { timer } from 'rxjs';
+import { switchMap, filter, pluck, timer } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 
@@ -93,19 +93,23 @@ export class CategoriesFormComponent implements OnInit {
     }
 
     private _checkEditMode() {
-        this.route.params.subscribe((params) => {
-            if (params['id']) {
-                this.editMode = true;
-                this.currentCategoryId = params['id'];
-                this.categoriesService.getCategory(params['id']).subscribe((category) => {
-                    this.form.setValue({
-                        name: category.name,
-                        icon: category.icon,
-                        color: category.color
-                    });
+        this.route.params
+            .pipe(
+                pluck('id'),
+                filter((id: string) => id != undefined),
+                switchMap((id: string) => {
+                    this.editMode = true;
+                    this.currentCategoryId = id;
+                    return this.categoriesService.getCategory(id);
+                })
+            )
+            .subscribe((category) => {
+                this.form.setValue({
+                    name: category.name,
+                    icon: category.icon,
+                    color: category.color
                 });
-            }
-        });
+            });
     }
 
     onCancel() {

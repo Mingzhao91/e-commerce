@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
-import { timer } from 'rxjs';
+import { switchMap, filter, pluck, timer } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 
@@ -58,25 +58,29 @@ export class ProductsFormComponent implements OnInit {
     }
 
     private _checkEditMode() {
-        this.route.params.subscribe((params) => {
-            if (params['id']) {
-                this.editMode = true;
-                this.currentProductId = params['id'];
-                this.productsService.getProduct(params['id']).subscribe((product) => {
-                    this.form.get('name')?.setValue(product.name);
-                    this.form.get('category')?.setValue(product.category?.id);
-                    this.form.get('brand')?.setValue(product.brand);
-                    this.form.get('price')?.setValue(product.price);
-                    this.form.get('countInStock')?.setValue(product.countInStock);
-                    this.form.get('isFeatured')?.setValue(product.isFeatured);
-                    this.form.get('description')?.setValue(product.description);
-                    this.form.get('richDescription')?.setValue(product.richDescription);
-                    this.form.get('image')?.setValidators([]);
-                    this.form.get('image')?.updateValueAndValidity();
-                    this.imageDisplay = product.image || '';
-                });
-            }
-        });
+        this.route.params
+            .pipe(
+                pluck('id'),
+                filter((id: string) => id != undefined),
+                switchMap((id: string) => {
+                    this.editMode = true;
+                    this.currentProductId = id;
+                    return this.productsService.getProduct(id);
+                })
+            )
+            .subscribe((product) => {
+                this.form.get('name')?.setValue(product.name);
+                this.form.get('category')?.setValue(product.category?.id);
+                this.form.get('brand')?.setValue(product.brand);
+                this.form.get('price')?.setValue(product.price);
+                this.form.get('countInStock')?.setValue(product.countInStock);
+                this.form.get('isFeatured')?.setValue(product.isFeatured);
+                this.form.get('description')?.setValue(product.description);
+                this.form.get('richDescription')?.setValue(product.richDescription);
+                this.form.get('image')?.setValidators([]);
+                this.form.get('image')?.updateValueAndValidity();
+                this.imageDisplay = product.image || '';
+            });
     }
 
     onImageUpload(event: any) {
