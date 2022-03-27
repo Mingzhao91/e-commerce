@@ -1,29 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { Order, OrdersService } from '@apps-workspace/orders';
 
-const ORDER_STATUS = {
-    Pending: {
-        label: 'Pending',
-        color: 'primary'
-    },
-    Processed: {
-        label: 'Processed',
-        color: 'warning'
-    },
-    Shipped: {
-        label: 'Shipped',
-        color: 'warning'
-    },
-    Delivered: {
-        label: 'Delivered',
-        color: 'success'
-    },
-    Failed: {
-        label: 'Failed',
-        color: 'danger'
-    }
-};
+import { ORDER_STATUS } from '../order.constants';
 
 @Component({
     selector: 'admin-orders-list',
@@ -32,18 +14,49 @@ const ORDER_STATUS = {
 })
 export class OrdersListComponent implements OnInit {
     orders: Order[] = [];
-    orderStatus: { [key: string]: { label: string; color: string } } = ORDER_STATUS;
+    orderStatus = ORDER_STATUS;
 
-    constructor(private ordersService: OrdersService) {}
+    constructor(
+        private ordersService: OrdersService,
+        private messageService: MessageService,
+        private confirmationService: ConfirmationService,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this._getOrders();
     }
 
-    showOrder(orderId: string) {}
+    showOrder(orderId: string) {
+        this.router.navigateByUrl(`orders/${orderId}`);
+    }
 
-    deleteOrder(orderId: string) {}
-
+    deleteOrder(orderId: string) {
+        this.confirmationService.confirm({
+            message: 'Do you want to delete this order?',
+            header: 'Delete Order',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.ordersService.deleteOrder(orderId).subscribe(
+                    () => {
+                        this._getOrders();
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: 'Order is deleted!'
+                        });
+                    },
+                    () => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Order is not deleted!'
+                        });
+                    }
+                );
+            }
+        });
+    }
     private _getOrders() {
         this.ordersService.getOrders().subscribe((orders) => {
             console.log(orders);
