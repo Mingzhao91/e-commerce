@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { UsersModule } from '@apps-workspace/users';
+import { AuthGuard, UsersModule } from '@apps-workspace/users';
 
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
@@ -62,6 +62,7 @@ const routes: Routes = [
     {
         path: '',
         component: ShellComponent,
+        canActivate: [AuthGuard],
         children: [
             {
                 path: 'dashboard',
