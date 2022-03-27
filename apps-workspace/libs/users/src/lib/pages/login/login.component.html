@@ -21,8 +21,8 @@
               </div>
               <small *ngIf="loginForm?.['email']?.invalid && isSubmitted"
                      class="p-error">
-                <span *ngIf="loginForm?.['email']?.['errors']?.['required']">email is required</span>
-                <span *ngIf="loginForm?.['email']?.['errors']?.['email']">email is invalid</span>
+                <span *ngIf="loginForm?.['email']?.['errors']?.['required']">Email is required</span>
+                <span *ngIf="loginForm?.['email']?.['errors']?.['email']">Email is invalid</span>
               </small>
             </div>
 
@@ -36,7 +36,7 @@
               </div>
               <small *ngIf="loginForm?.['password']?.invalid && isSubmitted"
                      class="p-error">
-                <span>password is required</span>
+                <span>Password is required</span>
               </small>
             </div>
 
@@ -44,6 +44,10 @@
               <p-button label="Submit"
                         styleClass="full-btn"
                         (onClick)="onSubmit()"></p-button>
+            </div>
+            <div class="col-12"
+                 *ngIf="isSubmitted && authError">
+              <small class="p-error">{{authMessage}}</small>
             </div>
           </div>
         </form>
