@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { UsersModule } from '@apps-workspace/users';
+
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { ShellComponent } from './shared/shell/shell.component';
@@ -136,6 +138,7 @@ const routes: Routes = [
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
+        UsersModule,
         ...UX_MODULES
     ],
     providers: [MessageService, ConfirmationService],
