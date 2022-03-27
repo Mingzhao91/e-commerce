@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
 
 import { MessageService, ConfirmationService } from 'primeng/api';
 
@@ -10,8 +12,9 @@ import { CategoriesService, Category } from '@apps-workspace/products';
     templateUrl: './categories-list.component.html',
     styleUrls: ['./categories-list.component.scss']
 })
-export class CategoriesListComponent implements OnInit {
+export class CategoriesListComponent implements OnInit, OnDestroy {
     public categories: Category[] = [];
+    public unsubscribe$: Subject<void> = new Subject();
 
     constructor(
         private categoriesService: CategoriesService,
@@ -30,23 +33,26 @@ export class CategoriesListComponent implements OnInit {
             header: 'Delete Category',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.categoriesService.deleteCategories(categoryId).subscribe({
-                    next: () => {
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Success',
-                            detail: 'Category is deleted!'
-                        });
-                        this._getCategories();
-                    },
-                    error: () => {
-                        this.messageService.add({
-                            severity: 'error',
-                            summary: 'Error',
-                            detail: 'Category is not deleted!'
-                        });
-                    }
-                });
+                this.categoriesService
+                    .deleteCategories(categoryId)
+                    .pipe(takeUntil(this.unsubscribe$))
+                    .subscribe({
+                        next: () => {
+                            this.messageService.add({
+                                severity: 'success',
+                                summary: 'Success',
+                                detail: 'Category is deleted!'
+                            });
+                            this._getCategories();
+                        },
+                        error: () => {
+                            this.messageService.add({
+                                severity: 'error',
+                                summary: 'Error',
+                                detail: 'Category is not deleted!'
+                            });
+                        }
+                    });
             }
         });
     }
@@ -56,8 +62,16 @@ export class CategoriesListComponent implements OnInit {
     }
 
     private _getCategories() {
-        this.categoriesService.getCategories().subscribe((categories) => {
-            this.categories = categories;
-        });
+        this.categoriesService
+            .getCategories()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((categories) => {
+                this.categories = categories;
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }

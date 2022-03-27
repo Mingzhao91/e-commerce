@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { switchMap, filter, pluck } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { switchMap, filter, pluck, takeUntil } from 'rxjs/operators';
 
 import { MessageService } from 'primeng/api';
 
@@ -15,10 +16,11 @@ import { ORDER_STATUS } from '../order.constants';
     templateUrl: './orders-detail.component.html',
     styleUrls: ['./orders-detail.component.scss']
 })
-export class OrdersDetailComponent implements OnInit {
-    order: Order;
-    orderStatuses: { id: string; name: string }[] = [];
-    selectedStatus: string;
+export class OrdersDetailComponent implements OnInit, OnDestroy {
+    public order: Order;
+    public orderStatuses: { id: string; name: string }[] = [];
+    public selectedStatus: string;
+    public unsubscribe$: Subject<void> = new Subject();
 
     constructor(private location: Location, private route: ActivatedRoute, private ordersService: OrdersService, private messageService: MessageService) {}
 
@@ -41,7 +43,8 @@ export class OrdersDetailComponent implements OnInit {
             .pipe(
                 pluck('id'),
                 filter((id) => id != undefined),
-                switchMap((id) => this.ordersService.getOrder(id))
+                switchMap((id) => this.ordersService.getOrder(id)),
+                takeUntil(this.unsubscribe$)
             )
             .subscribe((order) => {
                 this.order = order;
@@ -61,26 +64,34 @@ export class OrdersDetailComponent implements OnInit {
 
     onStatusChange(event: any) {
         if (this.order?.id) {
-            this.ordersService.updateOrder({ status: event.value }, this.order.id).subscribe({
-                next: () => {
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Success',
-                        detail: 'Order is updated!'
-                    });
-                },
-                error: () => {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: 'Order is not updated!'
-                    });
-                }
-            });
+            this.ordersService
+                .updateOrder({ status: event.value }, this.order.id)
+                .pipe(takeUntil(this.unsubscribe$))
+                .subscribe({
+                    next: () => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: 'Order is updated!'
+                        });
+                    },
+                    error: () => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Order is not updated!'
+                        });
+                    }
+                });
         }
     }
 
     onBack() {
         this.location.back();
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }

@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
 
 import { MessageService, ConfirmationService } from 'primeng/api';
 
@@ -10,8 +12,9 @@ import { Product, ProductsService } from '@apps-workspace/products';
     templateUrl: './products-list.component.html',
     styleUrls: ['./products-list.component.scss']
 })
-export class ProductsListComponent implements OnInit {
-    products: Product[] = [];
+export class ProductsListComponent implements OnInit, OnDestroy {
+    public products: Product[] = [];
+    public unsubscribe$: Subject<void> = new Subject();
 
     constructor(
         private productsService: ProductsService,
@@ -30,23 +33,26 @@ export class ProductsListComponent implements OnInit {
             header: 'Delete Product',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.productsService.deleteProduct(productId).subscribe(
-                    () => {
-                        this._getProducts();
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Success',
-                            detail: 'Product is deleted!'
-                        });
-                    },
-                    () => {
-                        this.messageService.add({
-                            severity: 'error',
-                            summary: 'Error',
-                            detail: 'Product is not deleted!'
-                        });
-                    }
-                );
+                this.productsService
+                    .deleteProduct(productId)
+                    .pipe(takeUntil(this.unsubscribe$))
+                    .subscribe({
+                        next: () => {
+                            this._getProducts();
+                            this.messageService.add({
+                                severity: 'success',
+                                summary: 'Success',
+                                detail: 'Product is deleted!'
+                            });
+                        },
+                        error: () => {
+                            this.messageService.add({
+                                severity: 'error',
+                                summary: 'Error',
+                                detail: 'Product is not deleted!'
+                            });
+                        }
+                    });
             }
         });
     }
@@ -56,8 +62,16 @@ export class ProductsListComponent implements OnInit {
     }
 
     private _getProducts() {
-        this.productsService.getProducts().subscribe((products) => {
-            this.products = products;
-        });
+        this.productsService
+            .getProducts()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((products) => {
+                this.products = products;
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }

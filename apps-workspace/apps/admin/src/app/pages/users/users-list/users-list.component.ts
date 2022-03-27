@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -10,8 +12,9 @@ import { UsersService, User } from '@apps-workspace/users';
     templateUrl: './users-list.component.html',
     styleUrls: ['./users-list.component.scss']
 })
-export class UsersListComponent implements OnInit {
-    users: User[] = [];
+export class UsersListComponent implements OnInit, OnDestroy {
+    public users: User[] = [];
+    public unsubscribe$: Subject<void> = new Subject();
 
     constructor(
         private usersService: UsersService,
@@ -30,23 +33,26 @@ export class UsersListComponent implements OnInit {
             header: 'Delete User',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.usersService.deleteUser(userId).subscribe({
-                    next: () => {
-                        this._getUsers();
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Success',
-                            detail: 'User is deleted!'
-                        });
-                    },
-                    error: () => {
-                        this.messageService.add({
-                            severity: 'error',
-                            summary: 'Error',
-                            detail: 'User is not deleted!'
-                        });
-                    }
-                });
+                this.usersService
+                    .deleteUser(userId)
+                    .pipe(takeUntil(this.unsubscribe$))
+                    .subscribe({
+                        next: () => {
+                            this._getUsers();
+                            this.messageService.add({
+                                severity: 'success',
+                                summary: 'Success',
+                                detail: 'User is deleted!'
+                            });
+                        },
+                        error: () => {
+                            this.messageService.add({
+                                severity: 'error',
+                                summary: 'Error',
+                                detail: 'User is not deleted!'
+                            });
+                        }
+                    });
             }
         });
     }
@@ -56,12 +62,20 @@ export class UsersListComponent implements OnInit {
     }
 
     private _getUsers() {
-        this.usersService.getUsers().subscribe((users) => {
-            this.users = users;
-        });
+        this.usersService
+            .getUsers()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((users) => {
+                this.users = users;
+            });
     }
 
     getCountryName(countryKey: string) {
         return countryKey ? this.usersService.getCountry(countryKey) : '';
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }

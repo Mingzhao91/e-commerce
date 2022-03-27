@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject, takeUntil } from 'rxjs';
 
 import { OrdersService } from '@apps-workspace/orders';
 import { ProductsService } from '@apps-workspace/products';
@@ -11,8 +11,9 @@ import { UsersService } from '@apps-workspace/users';
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
-    statistics: number[] = [];
+export class DashboardComponent implements OnInit, OnDestroy {
+    public statistics: number[] = [];
+    public unsubscribe$: Subject<void> = new Subject();
 
     constructor(private userService: UsersService, private productService: ProductsService, private ordersService: OrdersService) {}
 
@@ -22,8 +23,15 @@ export class DashboardComponent implements OnInit {
             this.productService.getProductsCount(),
             this.userService.getUsersCount(),
             this.ordersService.getTotalSales()
-        ]).subscribe((values) => {
-            this.statistics = values;
-        });
+        ])
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((values) => {
+                this.statistics = values;
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }
