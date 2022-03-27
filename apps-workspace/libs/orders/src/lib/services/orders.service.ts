@@ -23,15 +23,11 @@ export class OrdersService {
         return this.http.get<Order>(`${this.apiURLOrders}/${orderId}`);
     }
 
-    createOrders(order: Order): Observable<Order> {
-        return this.http.post<Order>(this.apiURLOrders, order);
+    updateOrder(orderStatus: { status: string }, orderId: string): Observable<Order> {
+        return this.http.put<Order>(`${this.apiURLOrders}/${orderId}`, orderStatus);
     }
 
-    updateOrders(order: Order): Observable<Order> {
-        return this.http.put<Order>(`${this.apiURLOrders}/${order.id}`, order);
-    }
-
-    deleteOrders(orderId: string): Observable<{ success: boolean; message: string }> {
+    deleteOrder(orderId: string): Observable<{ success: boolean; message: string }> {
         return this.http.delete<{ success: boolean; message: string }>(`${this.apiURLOrders}/${orderId}`);
     }
 }
