@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app.routing';
 import { UiModule } from '@apps-workspace/ui';
@@ -16,7 +17,7 @@ import { NavComponent } from './shared/nav/nav.component';
 
 @NgModule({
     declarations: [AppComponent, NxWelcomeComponent, HomePageComponent, ProductLstComponent, HeaderComponent, FooterComponent, NavComponent],
-    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, UiModule, ProductsModule, UiModule],
+    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, UiModule, ProductsModule],
     providers: [],
     bootstrap: [AppComponent]
 })
