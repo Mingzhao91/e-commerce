@@ -16,7 +16,7 @@ import { NavComponent } from './shared/nav/nav.component';
 
 @NgModule({
     declarations: [AppComponent, NxWelcomeComponent, HomePageComponent, ProductLstComponent, HeaderComponent, FooterComponent, NavComponent],
-    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, UiModule, ProductsModule],
+    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, UiModule, ProductsModule, UiModule],
     providers: [],
     bootstrap: [AppComponent]
 })
