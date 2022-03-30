@@ -1,6 +1,7 @@
 <div class="products-page">
   <div class="grid">
-    <div class="col-3">
+    <div *ngIf="!isCategoryPage"
+         class="col-3">
       <h4>Categories</h4>
       <div class="mb-2"
            *ngFor="let category of categories">
@@ -13,10 +14,10 @@
                     (onChange)="categoryFilter()"></p-checkbox>
       </div>
     </div>
-    <div class="col-9">
+    <div [ngClass]="{'col-12': isCategoryPage, 'col-9': !isCategoryPage}">
       <div class="grid"
            *ngIf="products">
-        <div class="col-4"
+        <div [ngClass]="{'col-3': isCategoryPage, 'col-4': !isCategoryPage}"
              *ngFor="let product of products">
           <products-product-item [product]="product"></products-product-item>
         </div>
