@@ -25,9 +25,9 @@ export class ProductsListComponent implements OnInit, OnDestroy {
         this._getCategories();
     }
 
-    private _getProducts() {
+    private _getProducts(categoriesFilter?: string[]) {
         this.productsService
-            .getProducts()
+            .getProducts(categoriesFilter)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe((products) => {
                 this.products = products;
@@ -41,6 +41,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
             .subscribe((categories) => {
                 this.categories = categories;
             });
+    }
+
+    categoryFilter() {
+        const selectedCategoris = this.categories.filter((category) => category.checked).map((category) => category.id);
+        this._getProducts(selectedCategoris as string[]);
     }
 
     ngOnDestroy(): void {

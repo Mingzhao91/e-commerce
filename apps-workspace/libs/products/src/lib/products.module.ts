@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Route, RouterModule } from '@angular/router';
 import { ProductsSearchComponent } from './components/products-search/products-search.component';
 import { CategoriesBannerComponent } from './components/categories-banner/categories-banner.component';
@@ -20,7 +21,7 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-    imports: [CommonModule, RouterModule.forChild(routes), ...UX_MODULES],
+    imports: [CommonModule, FormsModule, RouterModule.forChild(routes), ...UX_MODULES],
     declarations: [ProductsSearchComponent, CategoriesBannerComponent, ProductItemComponent, FeaturedProductsComponent, ProductsListComponent],
     exports: [ProductsSearchComponent, CategoriesBannerComponent, ProductItemComponent, FeaturedProductsComponent, ProductsListComponent]
 })

@@ -8,7 +8,9 @@
                     [binary]="true"
                     [value]="category.id"
                     [inputId]="category.id || ''"
-                    [label]="category.name || ''"></p-checkbox>
+                    [label]="category.name || ''"
+                    [(ngModel)]="category.checked"
+                    (onChange)="categoryFilter()"></p-checkbox>
       </div>
     </div>
     <div class="col-9">
