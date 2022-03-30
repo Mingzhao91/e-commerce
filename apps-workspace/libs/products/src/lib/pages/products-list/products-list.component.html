@@ -1,1 +1,24 @@
-<p>products-list works!</p>
+<div class="products-page">
+  <div class="grid">
+    <div class="col-3">
+      <h4>Categories</h4>
+      <div class="mb-2"
+           *ngFor="let category of categories">
+        <p-checkbox name="groupname"
+                    [binary]="true"
+                    [value]="category.id"
+                    [inputId]="category.id || ''"
+                    [label]="category.name || ''"></p-checkbox>
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="grid"
+           *ngIf="products">
+        <div class="col-4"
+             *ngFor="let product of products">
+          <products-product-item [product]="product"></products-product-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
