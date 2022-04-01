@@ -9,6 +9,8 @@ import { FeaturedProductsComponent } from './components/featured-products/featur
 import { ProductsListComponent } from './pages/products-list/products-list.component';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
 
+import { UiModule } from '@apps-workspace/ui';
+
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RatingModule } from 'primeng/rating';
@@ -32,7 +34,7 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-    imports: [CommonModule, FormsModule, RouterModule.forChild(routes), ...UX_MODULES],
+    imports: [CommonModule, FormsModule, RouterModule.forChild(routes), UiModule, ...UX_MODULES],
     declarations: [
         ProductsSearchComponent,
         CategoriesBannerComponent,
