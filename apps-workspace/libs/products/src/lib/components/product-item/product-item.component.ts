@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { Product } from '../../models/product';
 
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { CartItem, CartService } from '@apps-workspace/orders';
 
 @Component({
