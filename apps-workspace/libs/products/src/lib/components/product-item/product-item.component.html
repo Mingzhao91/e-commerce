@@ -9,7 +9,8 @@
     <h5 class="price">{{product.price | currency: 'GBP'}}</h5>
     <p-button styleClass="mt-3 add-to-cart"
               label="Add to cart"
-              icon="pi pi-shopping-cart">
+              icon="pi pi-shopping-cart"
+              (click)="addProductToCart()">
     </p-button>
   </div>
 </div>
