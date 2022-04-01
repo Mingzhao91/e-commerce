@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app.routing';
 import { UiModule } from '@apps-workspace/ui';
 import { ProductsModule } from '@apps-workspace/products';
+import { OrdersModule } from '@apps-workspace/orders';
 
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
@@ -16,7 +17,7 @@ import { NavComponent } from './shared/nav/nav.component';
 
 @NgModule({
     declarations: [AppComponent, NxWelcomeComponent, HomePageComponent, HeaderComponent, FooterComponent, NavComponent],
-    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, UiModule, ProductsModule],
+    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, UiModule, ProductsModule, OrdersModule],
     providers: [],
     bootstrap: [AppComponent]
 })
