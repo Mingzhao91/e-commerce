@@ -3,7 +3,8 @@
   <div class="product-item-wrapper">
     <img [src]="product.image"
          class="image"
-         [alt]="product.name">
+         [alt]="product.name"
+         [routerLink]="'/products/' + product.id">
     <h4 class="name">{{product.name}}</h4>
     <h5 class="price">{{product.price | currency: 'GBP'}}</h5>
     <p-button styleClass="mt-3 add-to-cart"
