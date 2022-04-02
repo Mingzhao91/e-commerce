@@ -1,4 +1,3 @@
-import { User } from '@apps-workspace/users';
 import { OrderItem } from './order-item';
 
 export class Order {
@@ -12,6 +11,6 @@ export class Order {
     phone?: string;
     status?: string;
     totalPrice?: string;
-    user?: User;
+    user?: any;
     dateOrdered?: string;
 }
