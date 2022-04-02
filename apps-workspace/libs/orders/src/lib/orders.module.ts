@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Route } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { CartService } from './services/cart.service';
 
@@ -22,7 +23,7 @@ export const routes: Route[] = [
 const UX_MODULES = [BadgeModule, ButtonModule, InputNumberModule];
 
 @NgModule({
-    imports: [CommonModule, RouterModule.forChild(routes), ...UX_MODULES],
+    imports: [CommonModule, FormsModule, RouterModule.forChild(routes), ...UX_MODULES],
     declarations: [CartIconComponent, CartPageComponent, OrderSummaryComponent],
     exports: [CartIconComponent, CartPageComponent, OrderSummaryComponent]
 })

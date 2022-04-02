@@ -35,10 +35,19 @@ export class CartPageComponent implements OnInit, OnDestroy {
                     .getProduct(cartItem.productId)
                     .pipe(take(1))
                     .subscribe((product) => {
-                        console.log('product: ', product);
                         this.cartItemsDetailed.push({
                             product,
                             quantity: cartItem.quantity
+                        });
+
+                        this.cartItemsDetailed.sort((item1, item2) => {
+                            if (item1.product.name < item2.product.name) {
+                                return -1;
+                            }
+                            if (item1.product.name > item2.product.name) {
+                                return 1;
+                            }
+                            return 0;
                         });
                     });
             });
@@ -51,6 +60,19 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
     deleteCartItem(cartItemDetailed: CartItemDetailed) {
         this.cartService.deleteCartItem(cartItemDetailed.product.id);
+    }
+
+    updateCartItemQuantity(event, cartItem: CartItemDetailed) {
+        console.log('event: ', event);
+        console.log('cartItem: ', cartItem);
+
+        this.cartService.setCartItem(
+            {
+                productId: cartItem.product.id,
+                quantity: event.value
+            },
+            true
+        );
     }
 
     ngOnDestroy(): void {
