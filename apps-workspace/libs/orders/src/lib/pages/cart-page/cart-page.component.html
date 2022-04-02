@@ -9,7 +9,7 @@
 
       <div>
         <h4>
-          My Cart: {{2}} Item(s)
+          My Cart: {{cartCount}} Item(s)
         </h4>
       </div>
 
@@ -30,7 +30,7 @@
             <div class="cart-item-price">{{cartItem.product.price | currency: 'GBP' }}</div>
             <div class="cart-item-remove">
               <p-button icon="pi pi-trash"
-                        (onClick)="deleteCartItem()"></p-button>
+                        (onClick)="deleteCartItem(cartItem)"></p-button>
             </div>
           </div>
 
