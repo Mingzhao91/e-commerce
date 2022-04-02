@@ -7,9 +7,7 @@ import { switchMap, filter, pluck, takeUntil } from 'rxjs/operators';
 
 import { MessageService } from 'primeng/api';
 
-import { Order, OrderItem, OrdersService } from '@apps-workspace/orders';
-
-import { ORDER_STATUS } from '../order.constants';
+import { Order, OrderItem, OrdersService, ORDER_STATUS } from '@apps-workspace/orders';
 
 @Component({
     selector: 'admin-orders-detail',
