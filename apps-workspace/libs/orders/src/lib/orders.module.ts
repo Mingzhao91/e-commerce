@@ -10,6 +10,7 @@ import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { OrderSummaryComponent } from './components/order-summary/order-summary.component';
 
 export const routes: Route[] = [
     {
@@ -22,8 +23,8 @@ const UX_MODULES = [BadgeModule, ButtonModule, InputNumberModule];
 
 @NgModule({
     imports: [CommonModule, RouterModule.forChild(routes), ...UX_MODULES],
-    declarations: [CartIconComponent, CartPageComponent],
-    exports: [CartIconComponent, CartPageComponent]
+    declarations: [CartIconComponent, CartPageComponent, OrderSummaryComponent],
+    exports: [CartIconComponent, CartPageComponent, OrderSummaryComponent]
 })
 export class OrdersModule {
     constructor(cartService: CartService) {
