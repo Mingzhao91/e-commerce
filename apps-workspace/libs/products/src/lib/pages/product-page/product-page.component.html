@@ -26,7 +26,7 @@
           <p-inputNumber [(ngModel)]="quantity"
                          inputId="quantity"
                          mode="decimal"
-                         [min]="0"
+                         [min]="1"
                          [max]="100"
                          class="ml-2">
           </p-inputNumber>
@@ -46,7 +46,7 @@
                 type="button"
                 label="Add to Cart"
                 class="p-button-rounded"
-                (onClick)="addProductToCart()"></button>
+                (click)="addProductToCart()"></button>
       </div>
 
 
