@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CartService } from './services/cart.service';
 
+import { AuthGuard } from '@apps-workspace/users';
+
 import { CartIconComponent } from './components/cart-icon/cart-icon.component';
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { OrderSummaryComponent } from './components/order-summary/order-summary.component';
@@ -25,6 +27,7 @@ export const routes: Route[] = [
     },
     {
         path: 'checkout',
+        canActivate: [AuthGuard],
         component: CheckoutPageComponent
     },
     {

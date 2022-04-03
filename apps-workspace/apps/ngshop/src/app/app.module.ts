@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app.routing';
 import { UiModule } from '@apps-workspace/ui';
 import { ProductsModule } from '@apps-workspace/products';
 import { OrdersModule } from '@apps-workspace/orders';
+import { UsersModule } from '@apps-workspace/users';
 
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
@@ -23,7 +24,7 @@ const UX_MODULES = [ToastModule];
 
 @NgModule({
     declarations: [AppComponent, NxWelcomeComponent, HomePageComponent, HeaderComponent, FooterComponent, NavComponent, MessagesComponent],
-    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, UiModule, ProductsModule, OrdersModule, ...UX_MODULES],
+    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, UiModule, ProductsModule, OrdersModule, UsersModule, ...UX_MODULES],
     providers: [MessageService],
     bootstrap: [AppComponent]
 })
