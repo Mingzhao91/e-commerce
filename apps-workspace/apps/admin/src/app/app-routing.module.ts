@@ -69,12 +69,12 @@ const routes: Routes = [
                 component: OrdersDetailComponent
             }
         ]
-    },
-    {
-        path: '**',
-        redirectTo: '',
-        pathMatch: 'full'
     }
+    // {
+    //     path: '**',
+    //     redirectTo: '',
+    //     pathMatch: 'full'
+    // }
 ];
 
 @NgModule({
