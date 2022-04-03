@@ -17,10 +17,7 @@ export class CartService {
     initCartLocalStorage() {
         const cart: Cart = this.getCart();
         if (!cart) {
-            const initCart = { items: [] };
-            const initCartJson = JSON.stringify(initCart);
-            localStorage.setItem(CART_KEY, initCartJson);
-            this.cart$.next(initCart);
+            this.setEmptyCart();
         } else {
             this.cart$.next(cart);
         }
@@ -65,5 +62,12 @@ export class CartService {
         const cartJsonString = JSON.stringify(cart);
         localStorage.setItem(CART_KEY, cartJsonString);
         this.cart$.next(cart);
+    }
+
+    setEmptyCart() {
+        const initCart = { items: [] };
+        const initCartJson = JSON.stringify(initCart);
+        localStorage.setItem(CART_KEY, initCartJson);
+        this.cart$.next(initCart);
     }
 }

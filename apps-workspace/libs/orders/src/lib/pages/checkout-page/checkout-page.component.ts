@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, take } from 'rxjs';
+import { take } from 'rxjs';
+
+import { MessageService } from 'primeng/api';
 
 import { UsersService } from '@apps-workspace/users';
 
@@ -26,7 +28,8 @@ export class CheckoutPageComponent implements OnInit {
         private usersService: UsersService,
         private formBuilder: FormBuilder,
         private cartService: CartService,
-        private ordersService: OrdersService
+        private ordersService: OrdersService,
+        private messageService: MessageService
     ) {}
     checkoutFormGroup: FormGroup;
     isSubmitted = false;
@@ -97,6 +100,18 @@ export class CheckoutPageComponent implements OnInit {
         this.ordersService
             .createOrder(order)
             .pipe(take(1))
-            .subscribe(() => {});
+            .subscribe({
+                next: () => {
+                    this.cartService.setEmptyCart();
+                    this.router.navigate(['/success']);
+                },
+                error: (error) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: `Fail to place your order. ${error.message}`
+                    });
+                }
+            });
     }
 }

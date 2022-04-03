@@ -9,6 +9,7 @@ import { CartIconComponent } from './components/cart-icon/cart-icon.component';
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { OrderSummaryComponent } from './components/order-summary/order-summary.component';
 import { CheckoutPageComponent } from './pages/checkout-page/checkout-page.component';
+import { ThankYouPageComponent } from './pages/thank-you-page/thank-you-page.component';
 
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
@@ -25,6 +26,10 @@ export const routes: Route[] = [
     {
         path: 'checkout',
         component: CheckoutPageComponent
+    },
+    {
+        path: 'success',
+        component: ThankYouPageComponent
     }
 ];
 
@@ -32,8 +37,8 @@ const UX_MODULES = [BadgeModule, ButtonModule, InputNumberModule, InputTextModul
 
 @NgModule({
     imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild(routes), ...UX_MODULES],
-    declarations: [CartIconComponent, CartPageComponent, OrderSummaryComponent, CheckoutPageComponent],
-    exports: [CartIconComponent, CartPageComponent, OrderSummaryComponent]
+    declarations: [CartIconComponent, CartPageComponent, OrderSummaryComponent, CheckoutPageComponent, ThankYouPageComponent],
+    exports: [CartIconComponent, CartPageComponent, OrderSummaryComponent, ThankYouPageComponent]
 })
 export class OrdersModule {
     constructor(cartService: CartService) {
