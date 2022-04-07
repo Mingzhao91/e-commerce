@@ -4,7 +4,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
 import { JwtInterceptor, UsersModule } from '@apps-workspace/users';
+
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
@@ -37,7 +42,6 @@ import { TagModule } from 'primeng/tag';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FieldsetModule } from 'primeng/fieldset';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { AppRoutingModule } from './app-routing.module';
 
 const UX_MODULES = [
     CardModule,
@@ -74,7 +78,18 @@ const UX_MODULES = [
         OrdersListComponent,
         OrdersDetailComponent
     ],
-    imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, UsersModule, ...UX_MODULES],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        UsersModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
+        ...UX_MODULES
+    ],
     providers: [
         MessageService,
         ConfirmationService,

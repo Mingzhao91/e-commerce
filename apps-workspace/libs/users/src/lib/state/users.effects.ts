@@ -1,27 +1,33 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { fetch } from '@nrwl/angular';
+import { catchError, concatMap, map, of } from 'rxjs';
+import { LocalStorageService } from '../services/local-storage.service';
+import { UsersService } from '../services/users.service';
 
 import * as UsersActions from './users.actions';
-import * as UsersFeature from './users.reducer';
 
 @Injectable()
 export class UsersEffects {
-    init$ = createEffect(() =>
+    buildUserSession$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(UsersActions.init),
-            fetch({
-                run: (action) => {
-                    // Your custom service 'load' logic goes here. For now just return a success action...
-                    return UsersActions.loadUsersSuccess({ users: [] });
-                },
-                onError: (action, error) => {
-                    console.error('Error', error);
-                    return UsersActions.loadUsersFailure({ error });
+            ofType(UsersActions.buildUserSession),
+            concatMap(() => {
+                if (this.localStorageService.isValidToken()) {
+                    const userId = this.localStorageService.getUserIdFromToken();
+                    if (userId) {
+                        return this.usersService.getUser(userId).pipe(
+                            map((user) => UsersActions.buildUserSessionSuccess({ user })),
+                            catchError(() => of(UsersActions.buildUserSessionFailed()))
+                        );
+                    } else {
+                        return of(UsersActions.buildUserSessionFailed());
+                    }
+                } else {
+                    return of(UsersActions.buildUserSessionFailed());
                 }
             })
         )
     );
 
-    constructor(private readonly actions$: Actions) {}
+    constructor(private readonly actions$: Actions, private localStorageService: LocalStorageService, private usersService: UsersService) {}
 }

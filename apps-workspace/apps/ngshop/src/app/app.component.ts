@@ -1,10 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { UsersService } from '@apps-workspace/users';
 
 @Component({
-  selector: 'apps-workspace-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'apps-workspace-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'ngshop';
+export class AppComponent implements OnInit {
+    title = 'ngshop';
+
+    constructor(private usersService: UsersService) {}
+
+    ngOnInit(): void {
+        this.usersService.initAppSession();
+    }
 }
