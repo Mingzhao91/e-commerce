@@ -18,8 +18,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.cartService.cart$.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-            console.log('update!!!!');
-
             this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
