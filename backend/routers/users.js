@@ -8,21 +8,21 @@ router.get(`/`, async (req, res) => {
   const userList = await User.find().select("-passwordHash");
 
   if (!userList) {
-    res.status(500).json({ success: false });
+    return res.status(500).json({ success: false });
   }
-  res.send(userList);
+  return res.status(200).send(userList);
 });
 
 router.get("/:id", async (req, res) => {
   const user = await User.findById(req.params.id).select("-passwordHash");
 
   if (!user) {
-    res
+    return res
       .status(500)
       .json({ message: "Category with the given ID was not found." });
   }
 
-  res.status(200).send(user);
+  return res.status(200).send(user);
 });
 
 router.post("/", async (req, res) => {
@@ -45,10 +45,10 @@ router.post("/", async (req, res) => {
   user = await user.save();
 
   if (!user) {
-    res.status(400).send("User cannot be created!");
+    return res.status(400).send("User cannot be created!");
   }
 
-  res.status(200).send(user);
+  return res.status(200).send(user);
 });
 
 router.put("/:id", async (req, res) => {
@@ -65,7 +65,7 @@ router.put("/:id", async (req, res) => {
       newPasswordHash = userExist.passwordHash;
     }
   } else {
-    res.status(400).send("User cannot be updated!");
+    return res.status(400).send("User cannot be updated!");
   }
 
   const user = await User.findByIdAndUpdate(
@@ -88,10 +88,10 @@ router.put("/:id", async (req, res) => {
   );
 
   if (!user) {
-    res.status(400).send("User cannot be updated!");
+    return res.status(400).send("User cannot be updated!");
   }
 
-  res.status(200).send(user);
+  return res.status(200).send(user);
 });
 
 router.post("/login", async (req, res) => {
@@ -100,7 +100,7 @@ router.post("/login", async (req, res) => {
   });
   const secret = process.env.JWT_SECRET;
   if (!user) {
-    res.status(400).send("User not found!");
+    return res.status(400).send("User not found!");
   }
 
   if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {
@@ -115,9 +115,9 @@ router.post("/login", async (req, res) => {
       }
     );
 
-    res.status(200).send({ user: user.email, token });
+    return res.status(200).send({ user: user.email, token });
   } else {
-    res.status(400).send("password is wrong!");
+    return res.status(400).send("password is wrong!");
   }
 });
 
@@ -131,24 +131,28 @@ router.get("/get/count", async (req, res) => {
       return res.status(500).json({ success: false });
     }
   } catch (error) {
-    res.status(400).json({ success: false, error });
+    return res.status(400).json({ success: false, error });
   }
 });
 
 router.delete(`/:id`, async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id)) {
-      res.status(400).send("Invalid User Id");
+      return res.status(400).send("Invalid User Id");
     }
     const user = await User.findByIdAndRemove(req.params.id);
 
     if (user) {
-      res.status(200).json({ success: true, message: "User is deleted." });
+      return res
+        .status(200)
+        .json({ success: true, message: "User is deleted." });
     } else {
-      res.status(404).json({ success: false, message: "User is not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "User is not found." });
     }
   } catch (error) {
-    res.status(400).json({ success: false, error });
+    return res.status(400).json({ success: false, error });
   }
 });
 

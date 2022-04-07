@@ -17,14 +17,14 @@ router.get("/", async (req, res) => {
     .sort({ dateOrdered: -1 });
 
   if (!orderList) {
-    res.status(500).json({ success: false });
+    return res.status(500).json({ success: false });
   }
-  res.status(200).send(orderList);
+  return res.status(200).send(orderList);
 });
 
 router.get("/:id", async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {
-    res.status(400).send("Invalid Order Id");
+    return res.status(400).send("Invalid Order Id");
   }
 
   const order = await Order.findById(req.params.id)
@@ -38,10 +38,12 @@ router.get("/:id", async (req, res) => {
     });
 
   if (!order) {
-    res.status(500).json({ message: "Order with the given ID was not found." });
+    return res
+      .status(500)
+      .json({ message: "Order with the given ID was not found." });
   }
 
-  res.status(200).send(order);
+  return res.status(200).send(order);
 });
 
 router.post("/", async (req, res) => {
@@ -90,15 +92,15 @@ router.post("/", async (req, res) => {
   order = await order.save();
 
   if (!order) {
-    res.status(400).send("Order cannot be created!");
+    return res.status(400).send("Order cannot be created!");
   }
 
-  res.status(200).send(order);
+  return res.status(200).send(order);
 });
 
 router.put("/:id", async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {
-    res.status(400).send("Invalid Order Id");
+    return res.status(400).send("Invalid Order Id");
   }
 
   const order = await Order.findByIdAndUpdate(
@@ -112,16 +114,16 @@ router.put("/:id", async (req, res) => {
   );
 
   if (!order) {
-    res.status(400).send("Order cannot be updated!");
+    return res.status(400).send("Order cannot be updated!");
   }
 
-  res.status(200).send(order);
+  return res.status(200).send(order);
 });
 
 router.delete("/:id", async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id)) {
-      res.status(400).send("Invalid Order Id");
+      return res.status(400).send("Invalid Order Id");
     }
 
     const order = await Order.findByIdAndRemove(req.params.id);
@@ -131,12 +133,16 @@ router.delete("/:id", async (req, res) => {
         await OrderItem.findByIdAndRemove(orderItemId);
       });
 
-      res.status(200).json({ success: true, message: "Order is deleted." });
+      return res
+        .status(200)
+        .json({ success: true, message: "Order is deleted." });
     } else {
-      res.status(404).json({ success: false, message: "Order is not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "Order is not found." });
     }
   } catch (error) {
-    res.status(400).json({ success: false, error });
+    return res.status(400).json({ success: false, error });
   }
 });
 
@@ -146,10 +152,10 @@ router.get("/get/totalsales", async (req, res) => {
   ]);
 
   if (!totalSales) {
-    res.status(400).send("The order sales cannot be generated.");
+    return res.status(400).send("The order sales cannot be generated.");
   }
 
-  res.send({ totalsales: totalSales.pop().totalsales });
+  return res.status(200).send({ totalsales: totalSales.pop().totalsales });
 });
 
 router.get(`/get/count`, async (req, res) => {
@@ -162,7 +168,7 @@ router.get(`/get/count`, async (req, res) => {
       return res.status(500).json({ success: false });
     }
   } catch (error) {
-    res.status(400).json({ success: false, error });
+    return res.status(400).json({ success: false, error });
   }
 });
 
@@ -180,9 +186,9 @@ router.get("/get/userorders/:userid", async (req, res) => {
     .sort({ dateOrdered: -1 });
 
   if (!userOrderList) {
-    res.status(500).json({ success: false });
+    return res.status(500).json({ success: false });
   }
-  res.status(200).send(userOrderList);
+  return res.status(200).send(userOrderList);
 });
 
 module.exports = router;
