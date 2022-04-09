@@ -43,6 +43,10 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { FieldsetModule } from 'primeng/fieldset';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
+import { NgxStripeModule } from 'ngx-stripe';
+
+import { environment } from '@env/environment';
+
 const UX_MODULES = [
     CardModule,
     ToolbarModule,
@@ -88,6 +92,7 @@ const UX_MODULES = [
         UsersModule,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
+        NgxStripeModule.forRoot(environment.stripePublicKey),
         ...UX_MODULES
     ],
     providers: [

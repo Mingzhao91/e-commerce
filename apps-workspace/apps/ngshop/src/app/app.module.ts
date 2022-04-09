@@ -23,6 +23,10 @@ import { MessageService } from 'primeng/api';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
+import { NgxStripeModule } from 'ngx-stripe';
+
+import { environment } from '@env/environment';
+
 const UX_MODULES = [ToastModule];
 
 @NgModule({
@@ -38,7 +42,8 @@ const UX_MODULES = [ToastModule];
         UsersModule,
         ...UX_MODULES,
         StoreModule.forRoot({}),
-        EffectsModule.forRoot([])
+        EffectsModule.forRoot([]),
+        NgxStripeModule.forRoot(environment.stripePublicKey)
     ],
     providers: [MessageService, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }],
     bootstrap: [AppComponent]

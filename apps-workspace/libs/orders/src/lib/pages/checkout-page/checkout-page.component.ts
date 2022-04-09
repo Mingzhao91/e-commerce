@@ -16,6 +16,7 @@ import { ORDER_STATUS } from '../../order.constants';
 
 import { CartService } from '../../services/cart.service';
 import { OrdersService } from '../../services/orders.service';
+import { StripeService } from 'ngx-stripe';
 
 @Component({
     selector: 'orders-checkout-page',
@@ -118,22 +119,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
             dateOrdered: `${Date.now()}`
         };
 
-        this.ordersService
-            .createOrder(order)
-            .pipe(take(1))
-            .subscribe({
-                next: () => {
-                    this.cartService.setEmptyCart();
-                    this.router.navigate(['/success']);
-                },
-                error: (error) => {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: `Fail to place your order. ${error.message}`
-                    });
-                }
-            });
+        this.ordersService.catchOrderData(order);
+
+        this.ordersService.createCheckoutSession(this.orderItems).subscribe((error) => {
+            if (error) {
+                console.log('error in redirect to payment');
+            }
+        });
     }
 
     ngOnDestroy(): void {
