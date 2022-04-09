@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from '@apps-workspace/users';
 
 @Component({
-    selector: 'apps-workspace-root',
+    selector: 'ngshop-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })

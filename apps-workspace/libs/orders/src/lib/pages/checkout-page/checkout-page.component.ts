@@ -2,9 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, take, takeUntil } from 'rxjs';
-
-import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 
 import { UsersService } from '@apps-workspace/users';
 
@@ -16,7 +14,6 @@ import { ORDER_STATUS } from '../../order.constants';
 
 import { CartService } from '../../services/cart.service';
 import { OrdersService } from '../../services/orders.service';
-import { StripeService } from 'ngx-stripe';
 
 @Component({
     selector: 'orders-checkout-page',
@@ -29,8 +26,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         private usersService: UsersService,
         private formBuilder: FormBuilder,
         private cartService: CartService,
-        private ordersService: OrdersService,
-        private messageService: MessageService
+        private ordersService: OrdersService
     ) {}
     checkoutFormGroup: FormGroup;
     isSubmitted = false;
