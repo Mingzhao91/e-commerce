@@ -7,6 +7,7 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
     "start": "nx serve",
     "build": "nx build",
+    "build-ngshop": "nx build ngshop --output-path docs --base-href /e-commerce-frontend/",
     "test": "nx test",
     "lint": "nx workspace-lint && ng lint",
     "lint-ngshop": "nx workspace-lint && ng lint ngshop",
