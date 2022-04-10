@@ -37,16 +37,20 @@ app.use(`${api}/users`, usersRouter);
 
 // Database
 mongoose
-  .connect(process.env.CONNECTION_STRING)
+  .connect(process.env.CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: process.env.DB_NAME,
+  })
   .then(() => {
-    console.log("database connection is ready");
+    // console.log("database connection is ready");
   })
   .catch((err) => {
     console.log("err: ", err);
   });
 
 // Server
-app.listen(3000, () => {
-  console.log("api: ", api);
-  console.log("server is running http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  // console.log("server is running http://localhost:3000");
 });
